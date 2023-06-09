@@ -1,10 +1,15 @@
-import React from 'react'
+import './Board.css'
+
+import Box from '../Box/Box'
+import { board } from '../../constants'
 
 function Board () {
   return (
-    <div>
-      <h1>Tablero</h1>
-    </div>
+    <section className='board-container'>
+      {
+        board.map((box, index) => <Box color={null} key={index} />)
+      }
+    </section>
   )
 }
 
