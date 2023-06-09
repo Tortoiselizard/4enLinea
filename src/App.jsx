@@ -7,7 +7,9 @@ import './App.css'
 function App () {
   return (
     <>
+      <header>Encabezado</header>
       <Board />
+      <footer>Pie de página</footer>
     </>
   )
 }
