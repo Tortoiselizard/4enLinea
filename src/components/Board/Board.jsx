@@ -1,27 +1,22 @@
-import { useState } from 'react'
 import './Board.css'
 
 import Box from '../Box/Box'
-import { board, players, placeTab } from '../../constants'
+import { placeTab, players } from '../../constants'
 
-function Board () {
-  const [boardState, setBoardState] = useState(board)
-
-  const [turn, setTurn] = useState(players.player1)
-
+function Board ({ board, changeBoard, turn, changeTurn }) {
   function handleBoard (column) {
-    setBoardState(placeTab(boardState, column, turn.color))
+    changeBoard(placeTab(board, column, turn.color))
     handleTurn()
   }
 
   function handleTurn () {
-    setTurn(turn => turn.color === 'red' ? players.player2 : players.player1)
+    changeTurn(turn => turn.color === 'red' ? players.player2 : players.player1)
   }
 
   return (
     <section className='board-container'>
       {
-        boardState.map((column, indexColumn) => {
+        board.map((column, indexColumn) => {
           return column.map((box, index) => <Box color={box} changeBoard={handleBoard} column={indexColumn} index={index} key={index} />)
         })
       }
