@@ -1,0 +1,41 @@
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px;
+    border: medium solid black;
+    padding: 3px;
+}
+
+.footer-container div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 30px;
+    padding: 10px;
+}
+
+#player-selected {
+    background-color: blue;
+    color: white;
+    border-radius: 60px;
+}
+
+.players-color {
+    background-color: bisque;
+    margin: 5px;
+    padding: 3px;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+#player1-color {
+    background-color: red;
+}
+
+#player2-color {
+    background-color: yellow;
+}
