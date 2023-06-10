@@ -1,7 +1,10 @@
 .board-container {
     border: medium solid black;
-    display: grid;
-    grid-template-columns: auto auto auto auto auto auto auto;
+    display: flex;
+    flex-flow: column-reverse wrap;
+    justify-content: space-around;
+    align-content: space-around;
+    height: 630px;
 }
 
 .board-container h1 {
