@@ -3,9 +3,11 @@ import './Board.css'
 import Box from '../Box/Box'
 import { placeTab, players } from '../../constants'
 
-function Board ({ board, changeBoard, turn, changeTurn }) {
+function Board ({ board, changeBoard, turn, changeTurn, changeLastPlay }) {
   function handleBoard (column) {
-    changeBoard(placeTab(board, column, turn.color))
+    const [newBorn, lastPlay] = placeTab(board, column, turn.color)
+    changeBoard(newBorn)
+    changeLastPlay(lastPlay)
     handleTurn()
   }
 
