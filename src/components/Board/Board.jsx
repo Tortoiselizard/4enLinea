@@ -12,14 +12,20 @@ function Board ({ board, changeBoard, turn, changeTurn, changeLastPlay }) {
   }
 
   function handleTurn () {
-    changeTurn(turn => turn.color === 'red' ? players.player2 : players.player1)
+    changeTurn(turn => turn.color === 'r' ? players.player2 : players.player1)
   }
 
   return (
     <section className='board-container'>
       {
-        board.map((column, indexColumn) => {
-          return column.map((box, index) => <Box color={box} changeBoard={handleBoard} column={indexColumn} index={index} key={index} />)
+        board.map((row, indexRow) => {
+          return (
+            <div key={`row${indexRow}`}>
+              {
+                row.map((box, indexColumn) => <Box color={box} changeBoard={handleBoard} column={indexColumn} key={`box-row${indexRow}-column${indexColumn}`} />)
+              }
+            </div>
+          )
         })
       }
     </section>
