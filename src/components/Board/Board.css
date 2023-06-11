@@ -1,12 +1,14 @@
 .board-container {
     border: medium solid black;
     display: flex;
-    flex-flow: column-reverse wrap;
+    flex-direction: column-reverse;
     justify-content: space-around;
     align-content: space-around;
     height: 540px;
 }
 
-.board-container h1 {
-    background-color: goldenrod;
+.board-container div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }
