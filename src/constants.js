@@ -1,24 +1,24 @@
-export const board = Array(7).fill(null).map(() => Array(6).fill(null))
+export const board = Array(6).fill(null).map(() => Array(7).fill('n'))
 export const players = {
   player1: {
     name: 'Troy Pernía',
-    color: 'red'
+    color: 'r'
   },
   player2: {
     name: 'Marina Sanchez',
-    color: 'yellow'
+    color: 'y'
   }
 }
 
 export function placeTab (board, column, color) {
   const newBoard = [...board]
   let lastPlay = {}
-  for (const index in newBoard[column]) {
-    if (newBoard[column][index] === null) {
-      newBoard[column][index] = color
+  for (const row in newBoard) {
+    if (newBoard[row][column] === 'n') {
+      newBoard[row][column] = color
       lastPlay = {
         x: column,
-        y: Number(index),
+        y: Number(row),
         color
       }
       break
@@ -28,18 +28,18 @@ export function placeTab (board, column, color) {
 }
 
 export function gameOver (board, lastPlay, record) {
-  // Si la lista de puntos tienen más de 1 punto, evaluo si hay puntos alrededor de la última jugada
-  if (record[color].points.length > 1) {
-    // Si la lista de rectas esta vacia entonces agrego las nuevas rectas en función de los puntos adyacentes a la última jugada
-    if (!record[color].lines.length && listDotsAround.length) {
-      listDotsAround.forEach(point => {
-        record[color].lines.push(equationLine({ x1: x, y1: y }, { x2: point[0], y2: point[1] }))
-      })
-      console.log(record[color].lines[1](x))
-    }
-  }
+  // // Si la lista de puntos tienen más de 1 punto, evaluo si hay puntos alrededor de la última jugada
+  // if (record[color].points.length > 1) {
+  //   // Si la lista de rectas esta vacia entonces agrego las nuevas rectas en función de los puntos adyacentes a la última jugada
+  //   if (!record[color].lines.length && listDotsAround.length) {
+  //     listDotsAround.forEach(point => {
+  //       record[color].lines.push(equationLine({ x1: x, y1: y }, { x2: point[0], y2: point[1] }))
+  //     })
+  //     console.log(record[color].lines[1](x))
+  //   }
+  // }
 
-  // return { status: 'win', name: 'Troy Pernía' }
+  // // return { status: 'win', name: 'Troy Pernía' }
 }
 
 export function findDotsAround (point, pointList) {
@@ -74,4 +74,117 @@ export function isLineNew (equation, listEquations) {
     }
   }
   return newEquation
+}
+
+export function makeLines (board) {
+  const horizontalLine = makeHorizontalLine(board)
+  const verticalLine = makeVerticalLine(board)
+  const crescentLine = makeCrescentLine(board)
+  const decreasingLine = makeDecreasingLine(board)
+  return {
+    horizontalLine,
+    verticalLine,
+    crescentLine,
+    decreasingLine
+  }
+}
+
+export function updateLines (lastPlay, record) {
+  const { x, y } = lastPlay
+  const newRecord = { ...record }
+  newRecord.horizontalLine[y] = updateHorizontalLine(lastPlay, newRecord.horizontalLine[y])
+  newRecord.verticalLine[x] = updateVerticalLine(lastPlay, newRecord.verticalLine[x])
+  newRecord.crescentLine[x + 5 - y] = updateCrescentLine(lastPlay, newRecord.crescentLine[x + 5 - y])
+  newRecord.decreasingLine[x + y] = updateDecreasingLine(lastPlay, newRecord.crescentLine[x + y])
+  return newRecord
+}
+
+export function makeHorizontalLine (board) {
+  return board.map(row => row.join(''))
+}
+
+export function updateHorizontalLine ({ x, y, color }, recordLine) {
+  const newRecordLine = recordLine.split('')
+  newRecordLine[x] = color
+  return newRecordLine.join('')
+}
+
+export function makeVerticalLine (board) {
+  const verticalLine = []
+  for (const column in board[0]) {
+    let vertical = ''
+    for (const row in board) {
+      vertical = vertical + (board[row][column])
+    }
+    verticalLine.push(vertical)
+  }
+  return verticalLine
+}
+
+export function updateVerticalLine ({ x, y, color }, recordLine) {
+  const newRecordLine = recordLine.split('')
+  newRecordLine[y] = color
+  return newRecordLine.join('')
+}
+
+export function makeCrescentLine (board) {
+  let x = 0
+  let y = 5
+  const crescent = []
+
+  while (x < board[0].length) {
+    let stringLine = ''
+    let i = x
+    let j = y
+    while (pointExist({ x: i, y: j }, board)) {
+      stringLine = stringLine + board[j][i]
+      i++
+      j++
+    }
+    crescent.push(stringLine)
+    if (y > 0) { y-- } else { x++ }
+  }
+
+  return crescent
+}
+
+export function updateCrescentLine ({ x, y, color }, recordLine) {
+  const newRecordLine = recordLine.split('')
+  const position = (x + 5 - y) <= 5 ? x : y
+  newRecordLine[position] = color
+  return newRecordLine.join('')
+}
+
+export function makeDecreasingLine (board) {
+  let x = 0
+  let y = 0
+  const decreasing = []
+
+  while (x < board[0].length) {
+    let stringLine = ''
+    let i = x
+    let j = y
+    while (pointExist({ x: i, y: j }, board)) {
+      stringLine = stringLine + board[j][i]
+      i++
+      j--
+    }
+    decreasing.push(stringLine)
+    if (y < 5) { y++ } else { x++ }
+  }
+
+  return decreasing
+}
+
+export function updateDecreasingLine ({ x, y, color }, recordLine) {
+  const newRecordLine = recordLine.split('')
+  const position = (x + y) <= 5 ? x : 5 - y
+  newRecordLine[position] = color
+  return newRecordLine.join('')
+}
+
+export function pointExist (point, board) {
+  const { x, y } = point
+  if (x >= 0 && x < board[0].length && y < board.length && y >= 0) return true
+  return false
 }
