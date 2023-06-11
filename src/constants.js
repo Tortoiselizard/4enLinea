@@ -10,6 +10,11 @@ export const players = {
   }
 }
 
+export const winCondition = {
+  r: 'rrrr',
+  y: 'yyyy'
+}
+
 export function placeTab (board, column, color) {
   const newBoard = [...board]
   let lastPlay = {}
@@ -27,19 +32,36 @@ export function placeTab (board, column, color) {
   return [newBoard, lastPlay]
 }
 
-export function gameOver (board, lastPlay, record) {
-  // // Si la lista de puntos tienen más de 1 punto, evaluo si hay puntos alrededor de la última jugada
-  // if (record[color].points.length > 1) {
-  //   // Si la lista de rectas esta vacia entonces agrego las nuevas rectas en función de los puntos adyacentes a la última jugada
-  //   if (!record[color].lines.length && listDotsAround.length) {
-  //     listDotsAround.forEach(point => {
-  //       record[color].lines.push(equationLine({ x1: x, y1: y }, { x2: point[0], y2: point[1] }))
-  //     })
-  //     console.log(record[color].lines[1](x))
-  //   }
-  // }
-
-  // // return { status: 'win', name: 'Troy Pernía' }
+export function gameOver (record, lastPlay) {
+  const { x, y, color } = lastPlay
+  const conditionGame = {
+    state: 'continue'
+  }
+  // Verificar las lineas horizontales
+  if (record.horizontalLine[y].includes(winCondition[color])) {
+    console.log('entre en horizontalLine')
+    conditionGame.state = 'win'
+    conditionGame.color = lastPlay.color
+  }
+  // Verificar las lineas verticales
+  if (record.verticalLine[x].includes(winCondition[color])) {
+    console.log('entre en verticalLine')
+    conditionGame.state = 'win'
+    conditionGame.color = lastPlay.color
+  }
+  // Verificar las lineas crecientes
+  if (record.crescentLine[x + 5 - y].includes(winCondition[color])) {
+    console.log('entre en crescentLine')
+    conditionGame.state = 'win'
+    conditionGame.color = lastPlay.color
+  }
+  // Verificar las lineas decrecientes
+  if (record.decreasingLine[x + y].includes(winCondition[color])) {
+    console.log('entre en decreasingLine')
+    conditionGame.state = 'win'
+    conditionGame.color = lastPlay.color
+  }
+  return conditionGame
 }
 
 export function findDotsAround (point, pointList) {
@@ -95,7 +117,7 @@ export function updateLines (lastPlay, record) {
   newRecord.horizontalLine[y] = updateHorizontalLine(lastPlay, newRecord.horizontalLine[y])
   newRecord.verticalLine[x] = updateVerticalLine(lastPlay, newRecord.verticalLine[x])
   newRecord.crescentLine[x + 5 - y] = updateCrescentLine(lastPlay, newRecord.crescentLine[x + 5 - y])
-  newRecord.decreasingLine[x + y] = updateDecreasingLine(lastPlay, newRecord.crescentLine[x + y])
+  newRecord.decreasingLine[x + y] = updateDecreasingLine(lastPlay, newRecord.decreasingLine[x + y])
   return newRecord
 }
 
