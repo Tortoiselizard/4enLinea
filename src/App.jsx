@@ -15,9 +15,30 @@ function App () {
 
   const [record, setRecord] = useState(() => makeLines(boardState))
 
+  const [gameStatus, setGameStatus] = useState({
+    status: 'continue'
+  })
+
   useEffect(() => {
     if (lastPlay !== null) handleRecord()
   }, [lastPlay])
+
+  useEffect(() => {
+    if (lastPlay !== null) {
+      const newGameStatus = gameOver(record, lastPlay)
+      if (newGameStatus.state === 'win') {
+        let playerWin
+        for (const player in players) {
+          if (players[player].color === newGameStatus.color) {
+            playerWin = players[player]
+            break
+          }
+        }
+        console.log(`Has ganado ${playerWin.name}`)
+        setGameStatus(newGameStatus)
+      }
+    }
+  }, [record])
 
   function handleRecord () {
     const newRecord = updateLines(lastPlay, record)
@@ -29,6 +50,7 @@ function App () {
       <header>Encabezado</header>
       <Board board={boardState} changeBoard={setBoardState} turn={turn} changeTurn={setTurn} changeLastPlay={setLastPlay} />
       <Footer turn={turn} />
+      <button onClick={() => console.log(record)}> Ver Record </button>
     </>
   )
 }
