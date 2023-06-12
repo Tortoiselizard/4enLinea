@@ -39,25 +39,21 @@ export function gameOver (record, lastPlay) {
   }
   // Verificar las lineas horizontales
   if (record.horizontalLine[y].includes(winCondition[color])) {
-    console.log('entre en horizontalLine')
     conditionGame.state = 'win'
     conditionGame.color = lastPlay.color
   }
   // Verificar las lineas verticales
   if (record.verticalLine[x].includes(winCondition[color])) {
-    console.log('entre en verticalLine')
     conditionGame.state = 'win'
     conditionGame.color = lastPlay.color
   }
   // Verificar las lineas crecientes
   if (record.crescentLine[x + 5 - y].includes(winCondition[color])) {
-    console.log('entre en crescentLine')
     conditionGame.state = 'win'
     conditionGame.color = lastPlay.color
   }
   // Verificar las lineas decrecientes
   if (record.decreasingLine[x + y].includes(winCondition[color])) {
-    console.log('entre en decreasingLine')
     conditionGame.state = 'win'
     conditionGame.color = lastPlay.color
   }
