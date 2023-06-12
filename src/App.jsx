@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 
+import Header from './components/Header/Header'
 import Board from './components/Board/Board'
 import Footer from './components/Footer/Footer'
 import Message from './components/Message/Message'
@@ -17,7 +18,7 @@ function App () {
   const [record, setRecord] = useState(() => makeLines(boardState))
 
   const [gameStatus, setGameStatus] = useState({
-    status: 'continue'
+    status: 'playing'
   })
 
   useEffect(() => {
@@ -55,13 +56,13 @@ function App () {
     setLastPlay(null)
     setRecord(() => makeLines(Array(6).fill(null).map(() => Array(7).fill('n'))))
     setGameStatus({
-      status: 'continue'
+      status: 'playing'
     })
   }
 
   return (
     <>
-      <header>Encabezado</header>
+      <Header />
       <Board board={boardState} changeBoard={setBoardState} turn={turn} changeTurn={setTurn} changeLastPlay={setLastPlay} />
       <Footer turn={turn} />
       <Message gameCondition={gameStatus} utility={restartGame} />
