@@ -1,7 +1,7 @@
 import './Message.css'
 
 function Message ({ gameCondition, utility }) {
-  if (gameCondition.status === 'continue') return null
+  if (gameCondition.status === 'playing') return null
   return (
     <section className='alert-message'>
       <div className='alert-message-container'>
