@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 
 import Board from './components/Board/Board'
 import Footer from './components/Footer/Footer'
-import { board, players, gameOver, findDotsAround, equationLine, isLineNew, makeLines, updateLines } from './constants'
+import Message from './components/Message/Message'
+import { board, players, gameOver, makeLines, updateLines } from './constants'
 
 import './App.css'
 
@@ -34,8 +35,11 @@ function App () {
             break
           }
         }
-        console.log(`Has ganado ${playerWin.name}`)
-        setGameStatus(newGameStatus)
+        setGameStatus({
+          state: 'win',
+          player: playerWin,
+          comment: 'Congratulations on your victory'
+        })
       }
     }
   }, [record])
@@ -45,12 +49,22 @@ function App () {
     setRecord(newRecord)
   }
 
+  function restartGame () {
+    setBoardState(Array(6).fill(null).map(() => Array(7).fill('n')))
+    setTurn(players.player1)
+    setLastPlay(null)
+    setRecord(() => makeLines(Array(6).fill(null).map(() => Array(7).fill('n'))))
+    setGameStatus({
+      status: 'continue'
+    })
+  }
+
   return (
     <>
       <header>Encabezado</header>
       <Board board={boardState} changeBoard={setBoardState} turn={turn} changeTurn={setTurn} changeLastPlay={setLastPlay} />
       <Footer turn={turn} />
-      <button onClick={() => console.log(record)}> Ver Record </button>
+      <Message gameCondition={gameStatus} utility={restartGame} />
     </>
   )
 }
