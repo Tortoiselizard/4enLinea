@@ -1,13 +1,13 @@
 .box-container {
-    background-color: bisque;
-    margin: 5px;
-    padding: 3px;
-    width: 80px;
-    height: 80px;
+    background-color: white;
+    width: 70px;
+    height: 70px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
+    border-color: transparent;
+    z-index: 0;
 }
 
 #box-container-p1 {
