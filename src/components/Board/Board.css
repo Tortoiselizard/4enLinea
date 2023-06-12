@@ -1,10 +1,12 @@
 .board-container {
-    border: medium solid black;
     display: flex;
     flex-direction: column-reverse;
     justify-content: space-around;
     align-content: space-around;
-    height: 540px;
+    height: 570px;
+    width: 590px;
+    padding: 33px 23px;
+    background-image: url("../../../public/imajes/board.png");
 }
 
 .board-container div {
